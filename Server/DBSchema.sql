@@ -1,16 +1,19 @@
 CREATE TABLE IF NOT EXISTS Submissions(
-    ID INTEGER PRIMARY KEY,
-    ReportVersion INTEGER NOT NULL,
-    -- Values available since ReportVersion 0
+    ID INTEGER PRIMARY KEY, -- This automatically becomes an alias for rowid in sqlite
+    -- Start of required information used to determine whether report already exists
+    ReportVersion INT NOT NULL,
+    UMDVersion INT NOT NULL,
+    OSVersion TEXT NOT NULL,
     DXGI_ADAPTER_DESC__Description TEXT NOT NULL,
     DXGI_ADAPTER_DESC__VendorId INT NOT NULL,
     DXGI_ADAPTER_DESC__DeviceId INT NOT NULL,
     DXGI_ADAPTER_DESC__SubSysId INT NOT NULL,
     DXGI_ADAPTER_DESC__Revision INT NOT NULL,
+    -- End
     DXGI_ADAPTER_DESC__DedicatedVideoMemory INT NOT NULL,
     DXGI_ADAPTER_DESC__DedicatedSystemMemory INT NOT NULL,
     DXGI_ADAPTER_DESC__SharedSystemMemory INT NOT NULL,
-    -- DXGI_ADAPTER_DESC__AdapterLuid, don't see any reason to add that
+    -- We could store DXGI_ADAPTER_DESC__AdapterLuid, but I don't see any reason for that
     DXGI_ADAPTER_DESC1__Flags INT,
     DXGI_ADAPTER_DESC2__GraphicsPreemptionGranularity INT,
     DXGI_ADAPTER_DESC2__ComputePreemptionGranularity INT,
@@ -75,7 +78,7 @@ CREATE TABLE IF NOT EXISTS Submissions(
     D3D12_FEATURE_DATA_D3D12_OPTIONS6__VariableShadingRateTier INT,
     D3D12_FEATURE_DATA_D3D12_OPTIONS6__ShadingRateImageTileSize INT,
     D3D12_FEATURE_DATA_D3D12_OPTIONS6__BackgroundProcessingSupported INT,
-    -- TODO D3D12_FEATURE_DATA_QUERY_META_COMMAND no idea wtf are those
+    -- TODO D3D12_FEATURE_DATA_QUERY_META_COMMAND, doesn't make sense to store https://discord.com/channels/590611987420020747/590965902564917258/1038543026831761418
     D3D12_FEATURE_DATA_D3D12_OPTIONS7__MeshShaderTier INT,
     D3D12_FEATURE_DATA_D3D12_OPTIONS7__SamplerFeedbackTier INT,
     D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_TYPE_COUNT__Count INT,

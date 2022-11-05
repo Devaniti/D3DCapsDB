@@ -63,12 +63,26 @@ api.get('/get_submission', async (req, res) => {
     }
 
     db.all("SELECT * FROM Submissions WHERE ID = ?", [req.query.ID], (err, rows) => {
+        if (err)
+        {
+            res.status(500)
+            res.send('ID is missing')
+            return
+        }
+
         res.send(JSON.stringify(rows))
     });
 })
 
 api.get('/get_all_submissions', async (req, res) => {
     db.all("SELECT * FROM Submissions", (err, rows) => {
+        if (err)
+        {
+            res.status(500)
+            res.send('ID is missing')
+            return
+        }
+        
         res.send(JSON.stringify(rows))
     });
 })
@@ -88,7 +102,9 @@ api.post('/post_submission', async (req, res) => {
         {
             res.status(500)
             res.send('DB Error')
+            return
         }
+
         console.dir(`Inserted submission ID ${this.lastID}`)
         res.send("" + this.lastID)
     })

@@ -14,6 +14,8 @@ CREATE TABLE IF NOT EXISTS Submissions(
     DXGI_ADAPTER_DESC__DedicatedSystemMemory INT NOT NULL,
     DXGI_ADAPTER_DESC__SharedSystemMemory INT NOT NULL,
     -- We could store DXGI_ADAPTER_DESC__AdapterLuid, but I don't see any reason for that
+    D3D11Supported INT NOT NULL,
+    D3D12Supported INT NOT NULL,
     DXGI_ADAPTER_DESC1__Flags INT,
     DXGI_ADAPTER_DESC2__GraphicsPreemptionGranularity INT,
     DXGI_ADAPTER_DESC2__ComputePreemptionGranularity INT,

@@ -2,49 +2,40 @@
 
 const fs = require('fs')
 const express = require('express')
-const sqlite3 = require('sqlite3').verbose();
+const Database = require('better-sqlite3');
 
 const databasePath = 'Database/main.db'
 const databaseSchemaPath = 'DBSchema.sql'
 const apiPort = 50853
-const propertyWhitelist = require("./property_whitelist.json");
+const requiredProperites = require("./StructureDesc/required_properites.json")
+const allProperties = require("./StructureDesc/all_properites.json")
 
 function isObjectAllowedInDB(inObj)
 {
-    for (const property in inObj) {
-        if (!propertyWhitelist.includes(property))
-        {
-            console.log(`Object disallowed for property ${property}`)
-            return false
-        }
-
-        var propertyValue = inObj[property];
-        if (typeof(propertyValue) != 'number' && typeof(propertyValue) != 'string' && propertyValue != null)
-        {
-            console.log(`Object disallowed for property ${property} of type ${typeof(propertyValue)}`)
-            return false
-        }
-    }
-    return true;
+    return requiredProperites.every(p => inObj[p] != null)
 }
 
-function convertToSqlQuery(inObj)
+function convertToSqlInsertQuery(tableName, propertyArray)
 {
-    return {
-        columnsString: "(" + Object.keys(inObj).join(",") + ")",
-        valuesString: "(" + Object.keys(inObj).map(e=>"?").join(",") + ")",
-        valuesArray: Object.keys(inObj).map(e=>inObj[e])
-    }
+    let columnsString = "(" + propertyArray.join(",") + ")"
+    let valuesString = "(" + propertyArray.map(e=>"?").join(",") + ")"
+    let sqlQuery = `INSERT INTO ${tableName} ${columnsString} Values ${valuesString};`
+    return sqlQuery
+}
+
+function convertObjectToArrayOfValues(propertyList, inObj)
+{
+    return propertyList.map(e=>inObj[e])
 }
 
 console.log('Initializing')
 
 const api = express()
-let db = new sqlite3.Database(databasePath)
+let db = new Database(databasePath)
 console.log(`Opened database ${databasePath}`)
 
 // Initialize DB if not already initialized
-db.run(fs.readFileSync(databaseSchemaPath).toString())
+db.exec(fs.readFileSync(databaseSchemaPath).toString())
 console.log(`Executed sql file ${databaseSchemaPath}`)
 
 api.use(express.json());
@@ -54,7 +45,8 @@ api.get('/', (req, res) => {
     res.send('Server is up')
 })
 
-api.get('/get_submission', async (req, res) => {
+const getSubmissionStatement = db.prepare("SELECT * FROM Submissions WHERE ID = ?");
+api.get('/get_submission', (req, res) => {
     if (!req.query.ID)
     {
         res.status(400)
@@ -62,32 +54,40 @@ api.get('/get_submission', async (req, res) => {
         return
     }
 
-    db.all("SELECT * FROM Submissions WHERE ID = ?", [req.query.ID], (err, rows) => {
-        if (err)
-        {
-            res.status(500)
-            res.send('ID is missing')
-            return
-        }
-
+    try{
+        let rows = getSubmissionStatement.all([req.query.ID])
         res.send(JSON.stringify(rows))
-    });
+    }
+    catch(e)
+    {
+        console.log('DB Error')
+        console.log(e)
+
+        res.status(500)
+        res.send('DB Error')
+        return
+    }
 })
 
-api.get('/get_all_submissions', async (req, res) => {
-    db.all("SELECT * FROM Submissions", (err, rows) => {
-        if (err)
-        {
-            res.status(500)
-            res.send('ID is missing')
-            return
-        }
-        
+const getAllSubmissionsStatement = db.prepare("SELECT * FROM Submissions");
+api.get('/get_all_submissions', (req, res) => {
+    try{
+        let rows = getAllSubmissionsStatement.all()
         res.send(JSON.stringify(rows))
-    });
+    }
+    catch(e)
+    {
+        console.log('DB Error')
+        console.log(e)
+
+        res.status(500)
+        res.send('DB Error')
+        return
+    }
 })
 
-api.post('/post_submission', async (req, res) => {
+const postSubmissionStatement = db.prepare(convertToSqlInsertQuery("Submissions", allProperties))
+api.post('/post_submission', (req, res) => {
     const newSubmission = req.body
     if (!isObjectAllowedInDB(req.body))
     {
@@ -95,19 +95,24 @@ api.post('/post_submission', async (req, res) => {
         res.send('Bad submission format')
         return
     }
-    const sqlQueryParts = convertToSqlQuery(newSubmission)
-    const sqlQuery = "INSERT INTO Submissions " + sqlQueryParts.columnsString + " Values " + sqlQueryParts.valuesString + ";"
-    db.run(sqlQuery, sqlQueryParts.valuesArray, function(err){
-        if (err)
-        {
-            res.status(500)
-            res.send('DB Error')
-            return
-        }
 
-        console.dir(`Inserted submission ID ${this.lastID}`)
-        res.send("" + this.lastID)
-    })
+    let parameterList = convertObjectToArrayOfValues(allProperties ,newSubmission)
+
+    try{
+        let info = postSubmissionStatement.run(parameterList);
+
+        console.dir(`Inserted submission ID ${info.lastInsertRowid}`)
+        res.send("" + info.lastInsertRowid)
+    }
+    catch(e)
+    {
+        console.log('DB Error')
+        console.log(e)
+
+        res.status(500)
+        res.send('DB Error')
+        return
+    }
 })
 
 api.listen(apiPort, () => {

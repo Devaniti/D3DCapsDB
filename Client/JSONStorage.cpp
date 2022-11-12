@@ -55,16 +55,13 @@ void JSONStorage::AddEntry(const wchar_t* name, const wchar_t* data)
     m_Data.push_back(entry);
 }
 
-std::wstring JSONStorage::Output() const
+void JSONStorage::Output(std::wostringstream& stringBuilder) const
 {
-    std::wostringstream stringBuilder;
-
     stringBuilder << L"{";
 
-    size_t count = m_Data.size();
-    for (size_t i = 0; i < count; ++i)
+    for (auto current = m_Data.begin(); current != m_Data.end(); ++current)
     {
-        const Entry& entry = m_Data[i];
+        const Entry& entry = *current;
         stringBuilder << L"\"" << entry.name << L"\":";
         switch (entry.dataType)
         {
@@ -78,13 +75,37 @@ std::wstring JSONStorage::Output() const
             assert(0);
             break;
         }
-        if (i != count - 1)
+        if (current + 1 != m_Data.end())
         {
             stringBuilder << L",";
         }
     }
 
     stringBuilder << L"}";
+}
+
+std::wstring JSONStorage::Output(const std::vector<JSONStorage>& elements)
+{
+    std::wostringstream stringBuilder;
+
+    stringBuilder << L"[";
+    for (auto current = elements.begin(); current != elements.end(); ++current)
+    {
+        current->Output(stringBuilder);
+        if (current + 1 != elements.end())
+        {
+            stringBuilder << L",";
+        }
+    }
+    stringBuilder << L"]";
+
+    return stringBuilder.str();
+}
+
+std::wstring JSONStorage::Output()
+{
+    std::wostringstream stringBuilder;
+    Output(stringBuilder);
     return stringBuilder.str();
 }
 

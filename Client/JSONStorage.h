@@ -22,9 +22,12 @@ public:
     void AddEntry(const wchar_t* name, int64_t data);
     void AddEntry(const wchar_t* name, const wchar_t* data);
 
-    std::wstring Output() const;
+    static std::wstring Output(const std::vector<JSONStorage>& elements);
+    std::wstring Output();
 
 private:
+    void Output(std::wostringstream& stringBuilder) const;
+
     struct Entry
     {
         Entry() = default;

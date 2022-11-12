@@ -1,6 +1,8 @@
 #include "PrecompiledHeader.h"
 #include "OSInfo.h"
 
+#pragma comment(lib, "version.lib")
+
 // Returns 0 on error
 int64_t GetWindowsVersion()
 {

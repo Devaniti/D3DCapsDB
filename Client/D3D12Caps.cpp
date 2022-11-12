@@ -2,6 +2,11 @@
 
 #include "D3D12Caps.h"
 
+#pragma comment(lib, "d3d12.lib")
+
+extern "C" { __declspec(dllexport) extern const UINT D3D12SDKVersion = 602; }
+extern "C" { __declspec(dllexport) extern const char* D3D12SDKPath = u8".\\D3D12\\"; }
+
 // Returns false on error
 bool Query_D3D12_FEATURE_DATA_D3D12_OPTIONS(const ComPtr<ID3D12Device>& device, JSONStorage& submission)
 {

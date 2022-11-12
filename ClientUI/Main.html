@@ -1,0 +1,39 @@
+<html>
+    <head>
+        <title>D3DCapsDB Report</title>
+        <script type="text/javascript" src="Reports.js"></script>
+        <script type="text/javascript">
+function OnLoad()
+{
+    reports.forEach(report => {
+        const table = document.createElement("table")
+        const tableBody = document.createElement("tbody");
+        
+        for (const property in report)
+        {
+            const row = document.createElement("tr");
+
+            const cell0 = document.createElement("td");
+            const cell0Text = document.createTextNode(property);
+            cell0.appendChild(cell0Text);
+            row.appendChild(cell0);
+            
+            const cell1 = document.createElement("td");
+            const cell1Text = document.createTextNode(report[property]);
+            cell1.appendChild(cell1Text);
+            row.appendChild(cell1);
+            
+            tableBody.appendChild(row);
+        }
+
+        table.appendChild(tableBody);
+        document.getElementById("TableContainer").appendChild(table);
+        table.setAttribute("border", "2");
+    })
+}
+        </script>
+    </head>
+    <body onload="OnLoad()">
+        <div id="TableContainer"></div>
+    </body>
+</html>

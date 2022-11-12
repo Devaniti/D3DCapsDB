@@ -1,0 +1,3 @@
+#include "resource.h"
+
+IDR_FILE1         RCDATA      "..\\ClientUI\\Main.html"

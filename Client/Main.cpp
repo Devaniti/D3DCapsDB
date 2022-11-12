@@ -4,20 +4,15 @@
 #include "OSInfo.h"
 #include "DXGIInfo.h"
 #include "D3D12Caps.h"
-
-#pragma comment(lib, "dxgi.lib")
-#pragma comment(lib, "d3d12.lib")
-#pragma comment(lib, "version.lib")
-
-extern "C" { __declspec(dllexport) extern const UINT D3D12SDKVersion = 602; }
-extern "C" { __declspec(dllexport) extern const char* D3D12SDKPath = u8".\\D3D12\\"; }
+#include "PageOutput.h"
 
 enum class ReturnCodes : int
 {
     OK = 0,
     CouldntQueryWindowsVersion = 1,
     CouldntCreateDXGIFactory = 2,
-    NoCompatibleGPUs = 3
+    NoCompatibleGPUs = 3,
+    FileSystemError = 4
 };
 
 const int64_t CurrentReportVersion = 0;
@@ -70,9 +65,10 @@ int main()
         return (int)ReturnCodes::NoCompatibleGPUs;
     }
 
-    for (const JSONStorage& submission : submissions)
+    if (!GenerateAndOpenOutputPage(submissions))
     {
-        std::wcout << submission.Output() << std::endl;
-        break;
+        assert(0);
+        return (int)ReturnCodes::FileSystemError;
     }
+    return (int)ReturnCodes::OK;
 }

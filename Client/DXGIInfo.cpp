@@ -1,6 +1,8 @@
 #include "PrecompiledHeader.h"
 #include "DXGIInfo.h"
 
+#pragma comment(lib, "dxgi.lib")
+
 // Returns 0 on error
 int64_t GetUMDVersion(const ComPtr<IDXGIAdapter>& adapter)
 {

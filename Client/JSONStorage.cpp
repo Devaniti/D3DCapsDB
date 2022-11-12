@@ -66,7 +66,7 @@ void JSONStorage::Output(std::wostringstream& stringBuilder) const
         switch (entry.dataType)
         {
         case Entry::Integer:
-            stringBuilder << entry.data.integer;
+            stringBuilder << L"\"" << entry.data.integer << L"\"";
             break;
         case Entry::String:
             stringBuilder << L"\"" << entry.data.string << L"\"";

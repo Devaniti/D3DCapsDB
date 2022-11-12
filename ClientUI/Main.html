@@ -3,6 +3,128 @@
         <title>D3DCapsDB Report</title>
         <script type="text/javascript" src="Reports.js"></script>
         <script type="text/javascript">
+const TrueFalseMapping = {"0":"false", "1":"true"}
+
+const EnumMappings = 
+{
+    "DXGI_ADAPTER_DESC2__GraphicsPreemptionGranularity":
+    {
+        "0":"DXGI_GRAPHICS_PREEMPTION_DMA_BUFFER_BOUNDARY",
+        "1":"DXGI_GRAPHICS_PREEMPTION_PRIMITIVE_BOUNDARY",
+        "2":"DXGI_GRAPHICS_PREEMPTION_TRIANGLE_BOUNDARY",
+        "3":"DXGI_GRAPHICS_PREEMPTION_PIXEL_BOUNDARY",
+        "4":"DXGI_GRAPHICS_PREEMPTION_INSTRUCTION_BOUNDARY",
+    },
+    "DXGI_ADAPTER_DESC2__ComputePreemptionGranularity":
+    {
+        "0":"DXGI_COMPUTE_PREEMPTION_DMA_BUFFER_BOUNDARY",
+        "1":"DXGI_COMPUTE_PREEMPTION_DISPATCH_BOUNDARY",
+        "2":"DXGI_COMPUTE_PREEMPTION_THREAD_GROUP_BOUNDARY",
+        "3":"DXGI_COMPUTE_PREEMPTION_THREAD_BOUNDARY",
+        "4":"DXGI_COMPUTE_PREEMPTION_INSTRUCTION_BOUNDARY",
+    },
+    "D3D12Supported": TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__DoublePrecisionFloatShaderOps": TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__OutputMergerLogicOp": TrueFalseMapping,
+}
+const BitFlagsMappings = 
+{
+    "DXGI_ADAPTER_DESC1__Flags":
+    {
+        "0":"DXGI_ADAPTER_FLAG_NONE",
+        "1":"DXGI_ADAPTER_FLAG_REMOTE",
+        "2":"DXGI_ADAPTER_FLAG_SOFTWARE"
+    },
+    "DXGI_ADAPTER_DESC3__Flags":
+    {
+        "0":"DXGI_ADAPTER_FLAG3_NONE",
+        "1":"DXGI_ADAPTER_FLAG3_REMOTE",
+        "2":"DXGI_ADAPTER_FLAG3_SOFTWARE",
+        "4":"DXGI_ADAPTER_FLAG3_ACG_COMPATIBLE",
+        "8":"DXGI_ADAPTER_FLAG3_SUPPORT_MONITORED_FENCES",
+        "16":"DXGI_ADAPTER_FLAG3_SUPPORT_NON_MONITORED_FENCES",
+        "32":"DXGI_ADAPTER_FLAG3_KEYED_MUTEX_CONFORMANCE"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__MinPrecisionSupport":
+    {
+        "0":"D3D12_SHADER_MIN_PRECISION_SUPPORT_NONE",
+        "1":"D3D12_SHADER_MIN_PRECISION_SUPPORT_10_BIT",
+        "2":"D3D12_SHADER_MIN_PRECISION_SUPPORT_16_BIT"
+    }
+}
+
+function MakeHumanReadable(property, value)
+{
+    switch (property)
+    {
+        // 64 bit encoded version
+        case "OSVersion":
+        case "UMDVersion":
+            {
+                let a = BigInt (value)
+                return `${(a>>48n)&65535n}.${(a>>32n)&65535n}.${(a>>16n)&65535n}.${a&65535n}`
+            }
+        // WORD sized hex number
+        case "DXGI_ADAPTER_DESC__VendorId":
+        case "DXGI_ADAPTER_DESC__DeviceId":
+        case "DXGI_ADAPTER_DESC__Revision":
+            {
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e;
+                return "0x" + ZeroPad(Number(value).toString(16), 4);
+            }
+        // DWORD sized hex number
+        case "DXGI_ADAPTER_DESC__SubSysId":
+            {
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e;
+                return "0x" + ZeroPad(Number(value).toString(16), 8);
+            }
+        // Bytes to human readable
+        case "DXGI_ADAPTER_DESC__DedicatedVideoMemory":
+        case "DXGI_ADAPTER_DESC__DedicatedSystemMemory":
+        case "DXGI_ADAPTER_DESC__SharedSystemMemory":
+            {
+                const prefixes = ['B', 'KiB', 'MiB', 'GiB', 'TiB']
+                let a = Number(value)
+                let prefixIndex = 0
+                while (a > 1024)
+                {
+                    a /= 1024
+                    ++prefixIndex
+                }
+                a = a.toFixed(2)
+                return a + prefixes[prefixIndex]
+            }
+    }
+
+    if (property in EnumMappings)
+    {
+        return EnumMappings[property][value] ?? `Unknown(${value})`
+    }
+
+    if (property in BitFlagsMappings)
+    {
+        let result = ''
+        for (let i = 1; i < value; i = i << 1)
+        {
+            if (value & i)
+            {
+                result += (BitFlagsMappings[property][i] ?? `Unknown(${i})`) + " | "
+            }
+        }
+        if (result == '')
+        {
+            result = BitFlagsMappings[property][0] ?? `Unknown(0)`
+        }
+        else
+        {
+            result = result.substring(0, result.length - 3);
+        }
+        return result
+    }
+
+    return value;
+}
+
 function OnLoad()
 {
     reports.forEach(report => {
@@ -19,7 +141,7 @@ function OnLoad()
             row.appendChild(cell0);
             
             const cell1 = document.createElement("td");
-            const cell1Text = document.createTextNode(report[property]);
+            const cell1Text = document.createTextNode(MakeHumanReadable(property, report[property]));
             cell1.appendChild(cell1Text);
             row.appendChild(cell1);
             

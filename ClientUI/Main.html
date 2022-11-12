@@ -131,6 +131,82 @@ const EnumMappings =
     },
     "D3D12_FEATURE_DATA_D3D12_OPTIONS3__BarycentricsSupported":TrueFalseMapping,
     "D3D12_FEATURE_DATA_EXISTING_HEAPS__Supported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS4__MSAA64KBAlignedTextureSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS4__SharedResourceCompatibilityTier":
+    {
+        "0":"D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_0",
+        "1":"D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_1",
+        "2":"D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_2"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS4__Native16BitShaderOpsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_SERIALIZATION__HeapSerializationTier":
+    {
+        "0":"D3D12_HEAP_SERIALIZATION_TIER_0",
+        "1":"D3D12_HEAP_SERIALIZATION_TIER_10"
+    },
+    "D3D12_FEATURE_DATA_CROSS_NODE__SharingTier":
+    {
+        "0":"D3D12_CROSS_NODE_SHARING_TIER_NOT_SUPPORTED",
+        "1":"D3D12_CROSS_NODE_SHARING_TIER_1_EMULATED",
+        "2":"D3D12_CROSS_NODE_SHARING_TIER_1",
+        "3":"D3D12_CROSS_NODE_SHARING_TIER_2",
+        "4":"D3D12_CROSS_NODE_SHARING_TIER_3"
+    },
+    "D3D12_FEATURE_DATA_CROSS_NODE__AtomicShaderInstructions":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS5__SRVOnlyTiledResourceTier3":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS5__RenderPassesTier":
+    {
+        "0":"D3D12_RENDER_PASS_TIER_0",
+        "1":"D3D12_RENDER_PASS_TIER_1",
+        "2":"D3D12_RENDER_PASS_TIER_2"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS5__RaytracingTier":
+    {
+        "0":"D3D12_RAYTRACING_TIER_NOT_SUPPORTED",
+        "10":"D3D12_RAYTRACING_TIER_1_0",
+        "11":"D3D12_RAYTRACING_TIER_1_1"
+    },
+    "D3D12_FEATURE_DATA_DISPLAYABLE__DisplayableTexture":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_DISPLAYABLE__SharedResourceCompatibilityTier":
+    {
+        "0":"D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_0",
+        "1":"D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_1",
+        "2":"D3D12_SHARED_RESOURCE_COMPATIBILITY_TIER_2"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS6__AdditionalShadingRatesSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS6__PerPrimitiveShadingRateSupportedWithViewportIndexing":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS6__VariableShadingRateTier":
+    {
+        "0":"D3D12_VARIABLE_SHADING_RATE_TIER_NOT_SUPPORTED",
+        "1":"D3D12_VARIABLE_SHADING_RATE_TIER_1",
+        "2":"D3D12_VARIABLE_SHADING_RATE_TIER_2"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS6__BackgroundProcessingSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS7__MeshShaderTier":
+    {
+        "0":"D3D12_MESH_SHADER_TIER_NOT_SUPPORTED",
+        "10":"D3D12_MESH_SHADER_TIER_1"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS7__SamplerFeedbackTier":
+    {
+        "0":"D3D12_SAMPLER_FEEDBACK_TIER_NOT_SUPPORTED",
+        "90":"D3D12_SAMPLER_FEEDBACK_TIER_0_9",
+        "100":"D3D12_SAMPLER_FEEDBACK_TIER_1_0"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS8__UnalignedBlockTexturesSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS9__MeshShaderPipelineStatsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS9__MeshShaderSupportsFullRangeRenderTargetArrayIndex":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS9__AtomicInt64OnTypedResourceSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS9__AtomicInt64OnGroupSharedSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS9__DerivativesInMeshAndAmplificationShadersSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS9__WaveMMATier":
+    {
+        "0":"D3D12_WAVE_MMA_TIER_NOT_SUPPORTED",
+        "10":"D3D12_WAVE_MMA_TIER_1_0"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS10__VariableRateShadingSumCombinerSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS10__MeshShaderPerPrimitiveShadingRateSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS11__AtomicInt64OnDescriptorHeapResourceSupported":TrueFalseMapping
 }
 
 const BitFlagsMappings = 
@@ -183,7 +259,6 @@ const BitFlagsMappings =
 
 function MakeHumanReadable(property, value)
 {
-
     if (property in EnumMappings)
     {
         return EnumMappings[property][value] ?? `Unknown(${value})`

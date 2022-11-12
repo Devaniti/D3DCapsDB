@@ -26,7 +26,113 @@ const EnumMappings =
     "D3D12Supported": TrueFalseMapping,
     "D3D12_FEATURE_DATA_D3D12_OPTIONS__DoublePrecisionFloatShaderOps": TrueFalseMapping,
     "D3D12_FEATURE_DATA_D3D12_OPTIONS__OutputMergerLogicOp": TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__TiledResourcesTier":
+    {
+        "0":"D3D12_TILED_RESOURCES_TIER_NOT_SUPPORTED",
+        "1":"D3D12_TILED_RESOURCES_TIER_1",
+        "2":"D3D12_TILED_RESOURCES_TIER_2",
+        "3":"D3D12_TILED_RESOURCES_TIER_3",
+        "4":"D3D12_TILED_RESOURCES_TIER_4",
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__ResourceBindingTier":
+    {
+        "1":"D3D12_RESOURCE_BINDING_TIER_1",
+        "2":"D3D12_RESOURCE_BINDING_TIER_2",
+        "3":"D3D12_RESOURCE_BINDING_TIER_3"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__PSSpecifiedStencilRefSupported": TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__TypedUAVLoadAdditionalFormats": TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__ROVsSupported": TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__ConservativeRasterizationTier":
+    {
+        "0":"D3D12_CONSERVATIVE_RASTERIZATION_TIER_NOT_SUPPORTED",
+        "1":"D3D12_CONSERVATIVE_RASTERIZATION_TIER_1",
+        "2":"D3D12_CONSERVATIVE_RASTERIZATION_TIER_2",
+        "3":"D3D12_CONSERVATIVE_RASTERIZATION_TIER_3"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__StandardSwizzle64KBSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__CrossNodeSharingTier":
+    {
+        "0":"D3D12_CROSS_NODE_SHARING_TIER_NOT_SUPPORTED",
+        "1":"D3D12_CROSS_NODE_SHARING_TIER_1_EMULATED",
+        "2":"D3D12_CROSS_NODE_SHARING_TIER_1",
+        "3":"D3D12_CROSS_NODE_SHARING_TIER_2",
+        "4":"D3D12_CROSS_NODE_SHARING_TIER_3"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__CrossAdapterRowMajorTextureSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__VPAndRTArrayIndexFromAnyShaderFeedingRasterizerSupportedWithoutGSEmulation":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS__ResourceHeapTier":
+    {
+        "1":"D3D12_RESOURCE_HEAP_TIER_1",
+        "2":"D3D12_RESOURCE_HEAP_TIER_2",
+    },
+    "D3D12_FEATURE_DATA_ARCHITECTURE__TileBasedRenderer":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_ARCHITECTURE__UMA":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_ARCHITECTURE__CacheCoherentUMA":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_FEATURE_LEVELS__MaxSupportedFeatureLevel":
+    {
+        "37120":"D3D_FEATURE_LEVEL_9_1",
+        "37376":"D3D_FEATURE_LEVEL_9_2",
+        "37632":"D3D_FEATURE_LEVEL_9_3",
+        "40960":"D3D_FEATURE_LEVEL_10_0",
+        "41216":"D3D_FEATURE_LEVEL_10_1",
+        "45056":"D3D_FEATURE_LEVEL_11_0",
+        "45312":"D3D_FEATURE_LEVEL_11_1",
+        "49152":"D3D_FEATURE_LEVEL_12_0",
+        "49408":"D3D_FEATURE_LEVEL_12_1",
+        "49664":"D3D_FEATURE_LEVEL_12_2"
+    },
+    "D3D12_FEATURE_DATA_SHADER_MODEL__HighestShaderModel":
+    {
+        "81":"D3D_SHADER_MODEL_5_1",
+        "96":"D3D_SHADER_MODEL_6_0",
+        "97":"D3D_SHADER_MODEL_6_1",
+        "98":"D3D_SHADER_MODEL_6_2",
+        "99":"D3D_SHADER_MODEL_6_3",
+        "100":"D3D_SHADER_MODEL_6_4",
+        "101":"D3D_SHADER_MODEL_6_5",
+        "102":"D3D_SHADER_MODEL_6_6",
+        "103":"D3D_SHADER_MODEL_6_7"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS1__WaveOps":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS1__ExpandedComputeResourceStates":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS1__Int64ShaderOps":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_PROTECTED_RESOURCE_SESSION_SUPPORT__Support":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_ROOT_SIGNATURE__HighestVersion":
+    {
+        "1":"D3D_ROOT_SIGNATURE_VERSION_1_0",
+        "2":"D3D_ROOT_SIGNATURE_VERSION_1_1"
+    },
+    "D3D12_FEATURE_DATA_ARCHITECTURE1__IsolatedMMU":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS2__DepthBoundsTestSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS2__ProgrammableSamplePositionsTier":
+    {
+        "0":"D3D12_PROGRAMMABLE_SAMPLE_POSITIONS_TIER_NOT_SUPPORTED",
+        "1":"D3D12_PROGRAMMABLE_SAMPLE_POSITIONS_TIER_1",
+        "2":"D3D12_PROGRAMMABLE_SAMPLE_POSITIONS_TIER_2"
+    },
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_DIRECT__PRIORITY_NORMAL__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_DIRECT__PRIORITY_HIGH__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_DIRECT__PRIORITY_GLOBAL_REALTIME__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_COMPUTE__PRIORITY_NORMAL__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_COMPUTE__PRIORITY_HIGH__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_COMPUTE__PRIORITY_GLOBAL_REALTIME__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_COPY__PRIORITY_NORMAL__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_COPY__PRIORITY_HIGH__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_COMMAND_QUEUE_PRIORITY__TYPE_COPY__PRIORITY_GLOBAL_REALTIME__PriorityForTypeIsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS3__CopyQueueTimestampQueriesSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS3__CastingFullyTypedFormatSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS3__ViewInstancingTier":
+    {
+        "0":"D3D12_VIEW_INSTANCING_TIER_NOT_SUPPORTED",
+        "1":"D3D12_VIEW_INSTANCING_TIER_1",
+        "2":"D3D12_VIEW_INSTANCING_TIER_2",
+        "3":"D3D12_VIEW_INSTANCING_TIER_3"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS3__BarycentricsSupported":TrueFalseMapping,
+    "D3D12_FEATURE_DATA_EXISTING_HEAPS__Supported":TrueFalseMapping,
 }
+
 const BitFlagsMappings = 
 {
     "DXGI_ADAPTER_DESC1__Flags":
@@ -50,11 +156,60 @@ const BitFlagsMappings =
         "0":"D3D12_SHADER_MIN_PRECISION_SUPPORT_NONE",
         "1":"D3D12_SHADER_MIN_PRECISION_SUPPORT_10_BIT",
         "2":"D3D12_SHADER_MIN_PRECISION_SUPPORT_16_BIT"
-    }
+    },
+    "D3D12_FEATURE_DATA_SHADER_CACHE__SupportFlags":
+    {
+        "0":"D3D12_SHADER_CACHE_SUPPORT_NONE",
+        "1":"D3D12_SHADER_CACHE_SUPPORT_SINGLE_PSO",
+        "2":"D3D12_SHADER_CACHE_SUPPORT_LIBRARY",
+        "4":"D3D12_SHADER_CACHE_SUPPORT_AUTOMATIC_INPROC_CACHE",
+        "8":"D3D12_SHADER_CACHE_SUPPORT_AUTOMATIC_DISK_CACHE",
+        "16":"D3D12_SHADER_CACHE_SUPPORT_DRIVER_MANAGED_CACHE",
+        "32":"D3D12_SHADER_CACHE_SUPPORT_SHADER_CONTROL_CLEAR",
+        "64":"D3D12_SHADER_CACHE_SUPPORT_SHADER_SESSION_DELETE"
+    },
+    "D3D12_FEATURE_DATA_D3D12_OPTIONS3__WriteBufferImmediateSupportFlags":
+    {
+        "0":"D3D12_COMMAND_LIST_SUPPORT_FLAG_NONE",
+        "1":"D3D12_COMMAND_LIST_SUPPORT_FLAG_DIRECT",
+        "2":"D3D12_COMMAND_LIST_SUPPORT_FLAG_BUNDLE",
+        "4":"D3D12_COMMAND_LIST_SUPPORT_FLAG_COMPUTE",
+        "8":"D3D12_COMMAND_LIST_SUPPORT_FLAG_COPY",
+        "16":"D3D12_COMMAND_LIST_SUPPORT_FLAG_VIDEO_DECODE",
+        "32":"D3D12_COMMAND_LIST_SUPPORT_FLAG_VIDEO_PROCESS",
+        "64":"D3D12_COMMAND_LIST_SUPPORT_FLAG_VIDEO_ENCODE"
+    },
 }
 
 function MakeHumanReadable(property, value)
 {
+
+    if (property in EnumMappings)
+    {
+        return EnumMappings[property][value] ?? `Unknown(${value})`
+    }
+
+    if (property in BitFlagsMappings)
+    {
+        let result = ''
+        for (let i = 1; i < value; i = i << 1)
+        {
+            if (value & i)
+            {
+                result += (BitFlagsMappings[property][i] ?? `Unknown(${i})`) + " | "
+            }
+        }
+        if (result == '')
+        {
+            result = BitFlagsMappings[property][0] ?? `Unknown(0)`
+        }
+        else
+        {
+            result = result.substring(0, result.length - 3);
+        }
+        return result
+    }
+
     switch (property)
     {
         // 64 bit encoded version
@@ -94,32 +249,6 @@ function MakeHumanReadable(property, value)
                 a = a.toFixed(2)
                 return a + prefixes[prefixIndex]
             }
-    }
-
-    if (property in EnumMappings)
-    {
-        return EnumMappings[property][value] ?? `Unknown(${value})`
-    }
-
-    if (property in BitFlagsMappings)
-    {
-        let result = ''
-        for (let i = 1; i < value; i = i << 1)
-        {
-            if (value & i)
-            {
-                result += (BitFlagsMappings[property][i] ?? `Unknown(${i})`) + " | "
-            }
-        }
-        if (result == '')
-        {
-            result = BitFlagsMappings[property][0] ?? `Unknown(0)`
-        }
-        else
-        {
-            result = result.substring(0, result.length - 3);
-        }
-        return result
     }
 
     return value;

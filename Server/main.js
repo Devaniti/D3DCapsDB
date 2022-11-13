@@ -1,6 +1,8 @@
 "use strict";
 
 const fs = require('fs')
+const https = require('https')
+const http = require('http')
 const express = require('express')
 const Database = require('better-sqlite3');
 
@@ -115,6 +117,21 @@ api.post('/post_submission', (req, res) => {
     }
 })
 
-api.listen(apiPort, () => {
-    console.log(`Started server on port ${apiPort}`)
-})
+if (process.env.SSLKey && process.env.SSLCert)
+{
+    console.log('Starting HTTPS Server')
+    const options = {
+        key: fs.readFileSync(process.env.SSLKey),
+        cert: fs.readFileSync(process.env.SSLCert),
+    }
+    https.createServer(options, api).listen(apiPort, () => {
+        console.log(`Started HTTPS Server on port ${apiPort}`)
+    })
+}
+else
+{
+    console.log('Starting HTTP Server')
+    http.createServer(api).listen(apiPort, () => {
+        console.log(`Started HTTP Server on port ${apiPort}`)
+    })
+}

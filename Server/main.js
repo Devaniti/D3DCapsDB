@@ -4,6 +4,7 @@ const fs = require('fs')
 const https = require('https')
 const http = require('http')
 const express = require('express')
+const cors = require('cors');
 const Database = require('better-sqlite3');
 
 const databasePath = 'Database/main.db'
@@ -42,6 +43,7 @@ console.log(`Executed sql file ${databaseSchemaPath}`)
 
 api.use(express.json());
 api.use(express.urlencoded({ extended: true }));
+api.use(cors());
 
 api.get('/', (req, res) => {
     res.send('Server is up')

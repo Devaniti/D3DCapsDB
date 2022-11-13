@@ -345,7 +345,7 @@ function OnLoad()
                 xhr.setRequestHeader("Content-Type", "application/json");
                 xhr.onreadystatechange = () => {
                     if(xhr.readyState == 4 && xhr.status == 200) {
-                        window.location.replace(`https://d3dcapsdb.boolka.dev:50853/get_submission?ID=${xhr.responseText}`);
+                        location.href=`https://d3dcapsdb.boolka.dev:50853/get_submission?ID=${xhr.responseText}`;
                     }
                 }
                 xhr.send(JSON.stringify(report));

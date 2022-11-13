@@ -4,7 +4,6 @@
         <script type="text/javascript" src="Reports.js"></script>
         <script type="text/javascript">
 const TrueFalseMapping = {"0":"false", "1":"true"}
-
 const EnumMappings = 
 {
     "DXGI_ADAPTER_DESC2__GraphicsPreemptionGranularity":
@@ -208,7 +207,6 @@ const EnumMappings =
     "D3D12_FEATURE_DATA_D3D12_OPTIONS10__MeshShaderPerPrimitiveShadingRateSupported":TrueFalseMapping,
     "D3D12_FEATURE_DATA_D3D12_OPTIONS11__AtomicInt64OnDescriptorHeapResourceSupported":TrueFalseMapping
 }
-
 const BitFlagsMappings = 
 {
     "DXGI_ADAPTER_DESC1__Flags":
@@ -334,6 +332,30 @@ function OnLoad()
     reports.forEach(report => {
         const table = document.createElement("table")
         const tableBody = document.createElement("tbody");
+
+        {
+            const firstRow = document.createElement("tr");
+            const cell = document.createElement("td");
+            let button = document.createElement("button");
+            button.onclick = () => {
+                button.disabled = true;
+
+                let xhr = new XMLHttpRequest();
+                xhr.open("POST", "https://d3dcapsdb.boolka.dev:50853/post_submission");
+                xhr.setRequestHeader("Content-Type", "application/json");
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        window.location.replace(`https://d3dcapsdb.boolka.dev:50853/get_submission?ID=${xhr.responseText}`);
+                    }
+                }
+                xhr.send(JSON.stringify(report));
+            }
+            const buttonText = document.createTextNode("Submit report");
+            button.appendChild(buttonText);
+            cell.appendChild(button);
+            firstRow.appendChild(cell);
+            tableBody.appendChild(firstRow);
+        }
         
         for (const property in report)
         {
@@ -360,6 +382,7 @@ function OnLoad()
         </script>
     </head>
     <body onload="OnLoad()">
+        <a href="https://d3dcapsdb.boolka.dev:50853/get_all_submissions">Full submissions list</a>
         <div id="TableContainer"></div>
     </body>
 </html>

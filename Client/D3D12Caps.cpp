@@ -4,7 +4,7 @@
 
 #pragma comment(lib, "d3d12.lib")
 
-extern "C" { __declspec(dllexport) extern const UINT D3D12SDKVersion = 602; }
+extern "C" { __declspec(dllexport) extern const UINT D3D12SDKVersion = 606; }
 extern "C" { __declspec(dllexport) extern const char* D3D12SDKPath = u8".\\D3D12\\"; }
 
 // Returns false on error

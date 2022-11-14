@@ -1,6 +1,53 @@
 <html>
     <head>
         <title>D3DCapsDB Report</title>
+        <style>
+table{
+    width: 100%;
+    border: 2px solid;
+    border-collapse: collapse;
+    border-color: #a7a7a7;
+    margin: 0.9em 0;
+    font-size: 0.9em;
+    font-family: 'Courier New', monospace;
+    box-shadow: 0 0 0.9em rgba(0, 0, 0, 0.15);
+    table-layout: fixed;
+    word-wrap: break-word;
+}
+tr{
+    width: 100%;
+}
+tr:nth-of-type(odd) {
+    background-color: #e6e5e5;
+}
+tr:nth-of-type(1) {
+    text-align: center;
+    background-color: #e6e5e5;
+    padding: 0;
+}
+td{
+    border: 1px solid;
+    border-color: #a7a7a7;
+}
+td:nth-of-type(even) {
+    background-color: #00000010;
+    width: 10%;
+}
+td:nth-of-type(odd) {
+    width: 60%;
+}
+button {
+  margin: auto;
+  background-color: #5bab5d;
+  border: none;
+  color: white;
+  padding: 0.6em 1em;
+  text-align: center;
+  text-decoration: none;
+  display: inline-block;
+  font-size: 1.3em;
+}
+        </style>
         <script type="text/javascript" src="Reports.js"></script>
         <script type="text/javascript">
 const TrueFalseMapping = {"0":"false", "1":"true"}
@@ -257,6 +304,8 @@ const BitFlagsMappings =
 
 function MakeHumanReadable(property, value)
 {
+    if (value == null) return value
+    
     if (property in EnumMappings)
     {
         return EnumMappings[property][value] ?? `Unknown(${value})`
@@ -331,52 +380,53 @@ function OnLoad()
 {
     reports.forEach(report => {
         const table = document.createElement("table")
-        const tableBody = document.createElement("tbody");
+        const tableBody = document.createElement("tbody")
 
         {
-            const firstRow = document.createElement("tr");
-            const cell = document.createElement("td");
-            let button = document.createElement("button");
+            const firstRow = document.createElement("tr")
+            const cell = document.createElement("td")
+            cell.colSpan = 2
+            let button = document.createElement("button")
             button.onclick = () => {
-                button.disabled = true;
+                button.disabled = true
 
-                let xhr = new XMLHttpRequest();
-                xhr.open("POST", "https://d3dcapsdb.boolka.dev:50853/post_submission");
-                xhr.setRequestHeader("Content-Type", "application/json");
+                let xhr = new XMLHttpRequest()
+                xhr.open("POST", "https://d3dcapsdb.boolka.dev:50853/post_submission")
+                xhr.setRequestHeader("Content-Type", "application/json")
                 xhr.onreadystatechange = () => {
                     if(xhr.readyState == 4 && xhr.status == 200) {
-                        location.href=`https://d3dcapsdb.boolka.dev:50853/get_submission?ID=${xhr.responseText}`;
+                        location.href=`https://d3dcapsdb.boolka.dev:50853/get_submission?ID=${xhr.responseText}`
                     }
                 }
-                xhr.send(JSON.stringify(report));
+                xhr.send(JSON.stringify(report))
             }
-            const buttonText = document.createTextNode("Submit report");
-            button.appendChild(buttonText);
-            cell.appendChild(button);
-            firstRow.appendChild(cell);
-            tableBody.appendChild(firstRow);
+            const buttonText = document.createTextNode("Submit report")
+            button.appendChild(buttonText)
+            cell.appendChild(button)
+            firstRow.appendChild(cell)
+            tableBody.appendChild(firstRow)
         }
         
         for (const property in report)
         {
-            const row = document.createElement("tr");
+            const row = document.createElement("tr")
 
-            const cell0 = document.createElement("td");
-            const cell0Text = document.createTextNode(property);
-            cell0.appendChild(cell0Text);
-            row.appendChild(cell0);
+            const cell0 = document.createElement("td")
+            const cell0Text = document.createTextNode(property)
+            cell0.appendChild(cell0Text)
+            row.appendChild(cell0)
             
-            const cell1 = document.createElement("td");
-            const cell1Text = document.createTextNode(MakeHumanReadable(property, report[property]));
-            cell1.appendChild(cell1Text);
-            row.appendChild(cell1);
+            const cell1 = document.createElement("td")
+            const cell1Text = document.createTextNode(MakeHumanReadable(property, report[property]))
+            cell1.appendChild(cell1Text)
+            row.appendChild(cell1)
             
-            tableBody.appendChild(row);
+            tableBody.appendChild(row)
         }
 
-        table.appendChild(tableBody);
-        document.getElementById("TableContainer").appendChild(table);
-        table.setAttribute("border", "2");
+        table.appendChild(tableBody)
+        document.getElementById("TableContainer").appendChild(table)
+        table.setAttribute("border", "2")
     })
 }
         </script>

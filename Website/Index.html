@@ -52,9 +52,10 @@ button:disabled {
   background-color: #7c7c7c;
 }
         </style>
-        <script type="text/javascript" src="Reports.js"></script>
         <script type="text/javascript">
 const apiAddress = "https://d3dcapsdb.boolka.dev:50853"
+
+let reports = []
 
 const TrueFalseMapping = {"0":"false", "1":"true"}
 const EnumMappings = 
@@ -415,25 +416,6 @@ function UpdateOutput()
         {
             let button = document.createElement("button")
             button.onclick = () => {
-                button.disabled = true
-
-                let xhr = new XMLHttpRequest()
-                xhr.open("POST", apiAddress + "/post_submission")
-                xhr.setRequestHeader("Content-Type", "application/json")
-                xhr.onreadystatechange = () => {
-                    if(xhr.readyState == 4 && xhr.status == 200) {
-                        location.href=`${apiAddress}/get_submission?ID=${xhr.responseText}`
-                    }
-                }
-                xhr.send(JSON.stringify(report))
-            }
-            const buttonText = document.createTextNode("Submit report")
-            button.appendChild(buttonText)
-            cell.appendChild(button)
-        }
-        {
-            let button = document.createElement("button")
-            button.onclick = () => {
                 ++reportIndex
                 UpdateOutput()
             }
@@ -469,12 +451,25 @@ function UpdateOutput()
 
 function OnLoad()
 {
-    UpdateOutput()
+    const tableContainer = document.getElementById("TableContainer")
+    const textContainer = document.createElement("div")
+    const loadingText = document.createTextNode("Loading. Please wait.")
+    textContainer.appendChild(loadingText)
+    tableContainer.appendChild(textContainer)
+
+    let xhr = new XMLHttpRequest()
+    xhr.open("GET", apiAddress + "/get_all_submissions")
+    xhr.onreadystatechange = () => {
+        if(xhr.readyState == 4 && xhr.status == 200) {
+            reports = JSON.parse(xhr.responseText)
+            UpdateOutput()
+        }
+    }
+    xhr.send()
 }
         </script>
     </head>
     <body onload="OnLoad()">
-        <a href="https://d3dcapsdb.boolka.dev:50853/get_all_submissions">Full submissions list</a>
         <div id="TableContainer"></div>
     </body>
 </html>

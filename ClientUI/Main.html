@@ -38,6 +38,7 @@ td:nth-of-type(odd) {
 }
 button {
   margin: auto;
+  width: 8.8em;
   background-color: #5bab5d;
   border: none;
   color: white;
@@ -46,6 +47,9 @@ button {
   text-decoration: none;
   display: inline-block;
   font-size: 1.3em;
+}
+button:disabled {
+  background-color: #7c7c7c;
 }
         </style>
         <script type="text/javascript" src="Reports.js"></script>
@@ -376,16 +380,37 @@ function MakeHumanReadable(property, value)
     return value;
 }
 
-function OnLoad()
-{
-    reports.forEach(report => {
-        const table = document.createElement("table")
-        const tableBody = document.createElement("tbody")
+let reportIndex = 0
 
+function UpdateOutput()
+{
+    const report = reports[reportIndex]
+
+    const tableContainer = document.getElementById("TableContainer")
+
+    while (tableContainer.lastElementChild) {
+        tableContainer.removeChild(tableContainer.lastElementChild);
+    }
+
+    const table = document.createElement("table")
+    const tableBody = document.createElement("tbody")
+
+    {
+        const firstRow = document.createElement("tr")
+        const cell = document.createElement("td")
+        cell.colSpan = 2
         {
-            const firstRow = document.createElement("tr")
-            const cell = document.createElement("td")
-            cell.colSpan = 2
+            let button = document.createElement("button")
+            button.onclick = () => {
+                --reportIndex
+                UpdateOutput()
+            }
+            button.disabled = reportIndex == 0
+            const buttonText = document.createTextNode("Previous report")
+            button.appendChild(buttonText)
+            cell.appendChild(button)
+        }
+        {
             let button = document.createElement("button")
             button.onclick = () => {
                 button.disabled = true
@@ -403,31 +428,48 @@ function OnLoad()
             const buttonText = document.createTextNode("Submit report")
             button.appendChild(buttonText)
             cell.appendChild(button)
-            firstRow.appendChild(cell)
-            tableBody.appendChild(firstRow)
         }
-        
-        for (const property in report)
         {
-            const row = document.createElement("tr")
-
-            const cell0 = document.createElement("td")
-            const cell0Text = document.createTextNode(property)
-            cell0.appendChild(cell0Text)
-            row.appendChild(cell0)
-            
-            const cell1 = document.createElement("td")
-            const cell1Text = document.createTextNode(MakeHumanReadable(property, report[property]))
-            cell1.appendChild(cell1Text)
-            row.appendChild(cell1)
-            
-            tableBody.appendChild(row)
+            let button = document.createElement("button")
+            button.onclick = () => {
+                ++reportIndex
+                UpdateOutput()
+            }
+            button.disabled = reportIndex == reports.length - 1
+            const buttonText = document.createTextNode("Next report")
+            button.appendChild(buttonText)
+            cell.appendChild(button)
         }
+        firstRow.appendChild(cell)
+        tableBody.appendChild(firstRow)
+    }
+    
+    for (const property in report)
+    {
+        const row = document.createElement("tr")
 
-        table.appendChild(tableBody)
-        document.getElementById("TableContainer").appendChild(table)
-        table.setAttribute("border", "2")
-    })
+        const cell0 = document.createElement("td")
+        const cell0Text = document.createTextNode(property)
+        cell0.appendChild(cell0Text)
+        row.appendChild(cell0)
+        
+        const cell1 = document.createElement("td")
+        const cell1Text = document.createTextNode(MakeHumanReadable(property, report[property]))
+        cell1.appendChild(cell1Text)
+        row.appendChild(cell1)
+        
+        tableBody.appendChild(row)
+    }
+
+    table.appendChild(tableBody)
+    tableContainer.appendChild(table)
+
+    //table.setAttribute("border", "2")
+}
+
+function OnLoad()
+{
+    UpdateOutput()
 }
         </script>
     </head>

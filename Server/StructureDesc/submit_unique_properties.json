@@ -1,0 +1,10 @@
+[
+    "ReportVersion",
+    "UMDVersion",
+    "OSVersion",
+    "DXGI_ADAPTER_DESC__Description",
+    "DXGI_ADAPTER_DESC__VendorId",
+    "DXGI_ADAPTER_DESC__DeviceId",
+    "DXGI_ADAPTER_DESC__SubSysId",
+    "DXGI_ADAPTER_DESC__Revision"
+]

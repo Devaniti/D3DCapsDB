@@ -1,3 +1,4 @@
+<!DOCTYPE html>
 <html>
     <head>
         <title>D3DCapsDB Report</title>
@@ -55,6 +56,7 @@ button:disabled {
         <script type="text/javascript" src="Reports.js"></script>
         <script type="text/javascript">
 const apiAddress = "https://d3dcapsdb.boolka.dev:50853"
+const siteAddress = "https://d3dcapsdb.boolka.dev"
 
 const TrueFalseMapping = {"0":"false", "1":"true"}
 const EnumMappings = 
@@ -422,7 +424,7 @@ function UpdateOutput()
                 xhr.setRequestHeader("Content-Type", "application/json")
                 xhr.onreadystatechange = () => {
                     if(xhr.readyState == 4 && xhr.status == 200) {
-                        location.href=`${apiAddress}/get_submission?ID=${xhr.responseText}`
+                        location.href=`${siteAddress}/ID?ID=${xhr.responseText}`
                     }
                 }
                 xhr.send(JSON.stringify(report))

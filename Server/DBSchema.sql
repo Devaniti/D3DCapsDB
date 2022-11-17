@@ -104,3 +104,14 @@ CREATE TABLE IF NOT EXISTS Submissions(
     D3D12_FEATURE_DATA_D3D12_OPTIONS10__MeshShaderPerPrimitiveShadingRateSupported INT,
     D3D12_FEATURE_DATA_D3D12_OPTIONS11__AtomicInt64OnDescriptorHeapResourceSupported INT
 ) STRICT;
+
+CREATE UNIQUE INDEX IF NOT EXISTS UniqueSubmission on Submissions (
+    ReportVersion, 
+    UMDVersion, 
+    OSVersion, 
+    DXGI_ADAPTER_DESC__Description, 
+    DXGI_ADAPTER_DESC__VendorId, 
+    DXGI_ADAPTER_DESC__DeviceId, 
+    DXGI_ADAPTER_DESC__SubSysId, 
+    DXGI_ADAPTER_DESC__Revision
+);

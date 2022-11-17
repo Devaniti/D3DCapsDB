@@ -21,21 +21,12 @@ tr{
 tr:nth-of-type(odd) {
     background-color: #e6e5e5;
 }
-tr:nth-of-type(1) {
-    text-align: center;
-    background-color: #e6e5e5;
-    padding: 0;
-}
 td{
     border: 1px solid;
     border-color: #a7a7a7;
 }
 td:nth-of-type(even) {
     background-color: #00000010;
-    width: 10%;
-}
-td:nth-of-type(odd) {
-    width: 60%;
 }
 button {
   margin: auto;
@@ -54,7 +45,7 @@ button:disabled {
 }
         </style>
         <script type="text/javascript">
-const apiAddress = "http://localhost:50853"
+const apiAddress = "https://d3dcapsdb.boolka.dev"
 
 let reports = []
 
@@ -398,36 +389,6 @@ function UpdateOutput()
 
     const table = document.createElement("table")
     const tableBody = document.createElement("tbody")
-
-    {
-        const firstRow = document.createElement("tr")
-        const cell = document.createElement("td")
-        cell.colSpan = 2
-        {
-            let button = document.createElement("button")
-            button.onclick = () => {
-                --reportIndex
-                UpdateOutput()
-            }
-            button.disabled = reportIndex == 0
-            const buttonText = document.createTextNode("Previous report")
-            button.appendChild(buttonText)
-            cell.appendChild(button)
-        }
-        {
-            let button = document.createElement("button")
-            button.onclick = () => {
-                ++reportIndex
-                UpdateOutput()
-            }
-            button.disabled = reportIndex == reports.length - 1
-            const buttonText = document.createTextNode("Next report")
-            button.appendChild(buttonText)
-            cell.appendChild(button)
-        }
-        firstRow.appendChild(cell)
-        tableBody.appendChild(firstRow)
-    }
     
     for (const property in report)
     {
@@ -458,8 +419,15 @@ function OnLoad()
     textContainer.appendChild(loadingText)
     tableContainer.appendChild(textContainer)
 
+    const queryParams = (new URL(document.location)).searchParams
+    if (!queryParams.has('ID'))
+    {
+        loadingText.textContent = "Missing ID parameter."
+        return;
+    }
+
     let xhr = new XMLHttpRequest()
-    xhr.open("GET", apiAddress + "/get_all_submissions")
+    xhr.open("GET", apiAddress + "/get_submission?ID=" + queryParams.get('ID'))
     xhr.onreadystatechange = () => {
         if(xhr.readyState == 4 && xhr.status == 200) {
             reports = JSON.parse(xhr.responseText)

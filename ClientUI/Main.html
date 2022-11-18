@@ -310,6 +310,10 @@ const BitFlagsMappings =
     },
 }
 
+let SubmitButton;
+let SubmitButtonText;
+let SubmittedID;
+
 function MakeHumanReadable(property, value)
 {
     if (value == null) return value
@@ -415,9 +419,16 @@ function UpdateOutput()
             cell.appendChild(button)
         }
         {
-            let button = document.createElement("button")
-            button.onclick = () => {
-                button.disabled = true
+            SubmitButton = document.createElement("button")
+            SubmitButton.disabled = true;
+            SubmitButton.onclick = () => {
+                SubmitButton.disabled = true
+
+                if (SubmittedID)
+                {
+                    location.href=`${siteAddress}/ID?ID=${SubmittedID}`
+                    return;
+                }
 
                 let xhr = new XMLHttpRequest()
                 xhr.open("POST", apiAddress + "/post_submission")
@@ -429,9 +440,25 @@ function UpdateOutput()
                 }
                 xhr.send(JSON.stringify(report))
             }
-            const buttonText = document.createTextNode("Submit report")
-            button.appendChild(buttonText)
-            cell.appendChild(button)
+            SubmitButtonText = document.createTextNode("Please wait.")
+            SubmitButton.appendChild(SubmitButtonText)
+            cell.appendChild(SubmitButton)
+            {
+                let xhr = new XMLHttpRequest()
+                xhr.open("POST", apiAddress + "/is_submitted")
+                xhr.setRequestHeader("Content-Type", "application/json")
+                xhr.onreadystatechange = () => {
+                    if(xhr.readyState == 4 && xhr.status == 200) {
+                        SubmittedID = Number(xhr.responseText)
+                        SubmitButton.disabled = false
+                        if (SubmittedID)
+                            SubmitButtonText.textContent = "Open Online"
+                        else
+                            SubmitButtonText.textContent = "Submit Report"
+                    }
+                }
+                xhr.send(JSON.stringify(report))
+            }
         }
         {
             let button = document.createElement("button")

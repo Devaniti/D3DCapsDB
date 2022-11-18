@@ -106,7 +106,10 @@ api.post('/is_submitted', (req, res) => {
 
     try{
         let rows = isSubmittedStatement.all(parameterList);
-        rows = rows.map(e => e.ID)
+        if (rows.length == 0)
+            rows = 0
+        else
+            rows = rows[0].ID
         res.send(JSON.stringify(rows))
     }
     catch(e)

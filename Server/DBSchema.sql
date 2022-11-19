@@ -106,12 +106,12 @@ CREATE TABLE IF NOT EXISTS Submissions(
 ) STRICT;
 
 CREATE UNIQUE INDEX IF NOT EXISTS UniqueSubmission on Submissions (
-    ReportVersion, 
-    UMDVersion, 
-    OSVersion, 
-    DXGI_ADAPTER_DESC__Description, 
-    DXGI_ADAPTER_DESC__VendorId, 
-    DXGI_ADAPTER_DESC__DeviceId, 
-    DXGI_ADAPTER_DESC__SubSysId, 
-    DXGI_ADAPTER_DESC__Revision
+    "ReportVersion",
+    "UMDVersion",
+    "OSVersion",
+    "DXGI_ADAPTER_DESC.Description",
+    "DXGI_ADAPTER_DESC.VendorId",
+    "DXGI_ADAPTER_DESC.DeviceId",
+    "DXGI_ADAPTER_DESC.SubSysId",
+    "DXGI_ADAPTER_DESC.Revision"
 );

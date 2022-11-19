@@ -21,7 +21,7 @@ function isObjectAllowedInDB(inObj)
 
 function convertToSqlInsertQuery(tableName, propertyArray)
 {
-    let columnsString = "(" + propertyArray.join(",") + ")"
+    let columnsString = "(" + propertyArray.map(e=>`"${e}"`).join(",") + ")"
     let valuesString = "(" + propertyArray.map(e=>"?").join(",") + ")"
     let sqlQuery = `INSERT INTO ${tableName} ${columnsString} Values ${valuesString};`
     return sqlQuery
@@ -29,7 +29,7 @@ function convertToSqlInsertQuery(tableName, propertyArray)
 
 function convertToSqlSelectIDQuery(tableName, propertyArray, suffix)
 {
-    let filterString = propertyArray.map(e => `${e} = ?`).join(" AND ")
+    let filterString = propertyArray.map(e => `"${e}" = ?`).join(" AND ")
     let sqlQuery = `Select ID from ${tableName} WHERE ${filterString} ${suffix};`
     return sqlQuery
 }

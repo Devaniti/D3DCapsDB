@@ -1,11 +1,11 @@
-"use strict";
+"use strict"
 
 const fs = require('fs')
 const https = require('https')
 const http = require('http')
 const express = require('express')
-const cors = require('cors');
-const Database = require('better-sqlite3');
+const cors = require('cors')
+const Database = require('better-sqlite3')
 
 const databasePath = 'Database/main.db'
 const databaseSchemaPath = 'DBSchema.sql'
@@ -49,15 +49,15 @@ console.log(`Opened database ${databasePath}`)
 db.exec(fs.readFileSync(databaseSchemaPath).toString())
 console.log(`Executed sql file ${databaseSchemaPath}`)
 
-api.use(express.json());
-api.use(express.urlencoded({ extended: true }));
-api.use(cors());
+api.use(express.json())
+api.use(express.urlencoded({ extended: true }))
+api.use(cors())
 
 api.get('/', (req, res) => {
     res.send('Server is up')
 })
 
-const getSubmissionStatement = db.prepare("SELECT * FROM Submissions WHERE ID = ?");
+const getSubmissionStatement = db.prepare("SELECT * FROM Submissions WHERE ID = ?")
 api.get('/get_submission', (req, res) => {
     if (!req.query.ID)
     {
@@ -81,7 +81,7 @@ api.get('/get_submission', (req, res) => {
     }
 })
 
-const getAllSubmissionsStatement = db.prepare("SELECT * FROM Submissions");
+const getAllSubmissionsStatement = db.prepare("SELECT * FROM Submissions")
 api.get('/get_all_submissions', (req, res) => {
     try{
         let rows = getAllSubmissionsStatement.all()
@@ -105,7 +105,7 @@ api.post('/is_submitted', (req, res) => {
     let parameterList = convertObjectToArrayOfValues(submitUniqueProperites, newSubmission)
 
     try{
-        let rows = isSubmittedStatement.all(parameterList);
+        let rows = isSubmittedStatement.all(parameterList)
         if (rows.length == 0)
             rows = 0
         else

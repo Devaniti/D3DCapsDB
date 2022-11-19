@@ -309,6 +309,14 @@ const BitFlagsMappings =
         "64":"D3D12_COMMAND_LIST_SUPPORT_FLAG_VIDEO_ENCODE"
     },
 }
+const VendorIDs = 
+{
+    "4098":"AMD/ATI",
+    "4130":"AMD",
+    "4318":"NVIDIA",
+    "5140":"Microsoft",
+    "32902":"Intel",
+}
 
 let SubmitButton
 let SubmitButtonText
@@ -355,6 +363,15 @@ function MakeHumanReadable(property, value)
             }
         // WORD sized hex number
         case "DXGI_ADAPTER_DESC.VendorId":
+            {
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e
+                let hexValue = "0x" + ZeroPad(Number(value).toString(16), 4)
+                if (VendorIDs[value])
+                    return `${hexValue} (${VendorIDs[value]})`
+                else
+                    return hexValue
+            }
+        // WORD sized hex number
         case "DXGI_ADAPTER_DESC.DeviceId":
         case "DXGI_ADAPTER_DESC.Revision":
             {

@@ -301,6 +301,15 @@ const BitFlagsMappings =
     },
 }
 
+const VendorIDs = 
+{
+    "4098":"AMD/ATI",
+    "4130":"AMD",
+    "4318":"NVIDIA",
+    "5140":"Microsoft",
+    "32902":"Intel",
+}
+
 function MakeHumanReadable(property, value)
 {
     if (value == null) return value
@@ -326,7 +335,7 @@ function MakeHumanReadable(property, value)
         }
         else
         {
-            result = result.substring(0, result.length - 3);
+            result = result.substring(0, result.length - 3)
         }
         return result
     }
@@ -342,17 +351,26 @@ function MakeHumanReadable(property, value)
             }
         // WORD sized hex number
         case "DXGI_ADAPTER_DESC.VendorId":
+            {
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e
+                let hexValue = "0x" + ZeroPad(Number(value).toString(16), 4)
+                if (VendorIDs[value])
+                    return `${hexValue} (${VendorIDs[value]})`
+                else
+                    return hexValue
+            }
+        // WORD sized hex number
         case "DXGI_ADAPTER_DESC.DeviceId":
         case "DXGI_ADAPTER_DESC.Revision":
             {
-                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e;
-                return "0x" + ZeroPad(Number(value).toString(16), 4);
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e
+                return "0x" + ZeroPad(Number(value).toString(16), 4)
             }
         // DWORD sized hex number
         case "DXGI_ADAPTER_DESC.SubSysId":
             {
-                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e;
-                return "0x" + ZeroPad(Number(value).toString(16), 8);
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e
+                return "0x" + ZeroPad(Number(value).toString(16), 8)
             }
         // Bytes to human readable
         case "DXGI_ADAPTER_DESC.DedicatedVideoMemory":
@@ -372,7 +390,7 @@ function MakeHumanReadable(property, value)
             }
     }
 
-    return value;
+    return value
 }
 
 let reportIndex = 0
@@ -384,7 +402,7 @@ function UpdateOutput()
     const tableContainer = document.getElementById("TableContainer")
 
     while (tableContainer.lastElementChild) {
-        tableContainer.removeChild(tableContainer.lastElementChild);
+        tableContainer.removeChild(tableContainer.lastElementChild)
     }
 
     const table = document.createElement("table")
@@ -423,7 +441,7 @@ function OnLoad()
     if (!queryParams.has('ID'))
     {
         loadingText.textContent = "Missing ID parameter."
-        return;
+        return
     }
 
     let xhr = new XMLHttpRequest()

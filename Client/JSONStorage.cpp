@@ -2,7 +2,7 @@
 
 #include "JSONStorage.h"
 
-const wchar_t* JSONStorage::ms_Separator = L"__";
+const wchar_t* JSONStorage::ms_Separator = L".";
 
 JSONStorage::~JSONStorage()
 {

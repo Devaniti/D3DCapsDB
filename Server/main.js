@@ -147,7 +147,7 @@ api.post('/post_submission', (req, res) => {
 
         let info = postSubmissionStatement.run(parameterList)
 
-        console.log(`Inserted submission ID ${info.lastInsertRowid} - ${newSubmission["DXGI_ADAPTER_DESC__Description"]}`)
+        console.log(`Inserted submission ID ${info.lastInsertRowid} - ${newSubmission["DXGI_ADAPTER_DESC.Description"]}`)
         res.send("" + info.lastInsertRowid)
         return
     }

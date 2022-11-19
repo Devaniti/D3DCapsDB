@@ -11,6 +11,7 @@ const databasePath = 'Database/main.db'
 const databaseSchemaPath = 'DBSchema.sql'
 const apiPort = 50853
 const requiredProperites = require("./StructureDesc/required_properites.json")
+const submitUniqueProperites = require("./StructureDesc/submit_unique_properties.json")
 const allProperties = require("./StructureDesc/all_properites.json")
 
 function isObjectAllowedInDB(inObj)
@@ -23,6 +24,13 @@ function convertToSqlInsertQuery(tableName, propertyArray)
     let columnsString = "(" + propertyArray.join(",") + ")"
     let valuesString = "(" + propertyArray.map(e=>"?").join(",") + ")"
     let sqlQuery = `INSERT INTO ${tableName} ${columnsString} Values ${valuesString};`
+    return sqlQuery
+}
+
+function convertToSqlSelectIDQuery(tableName, propertyArray, suffix)
+{
+    let filterString = propertyArray.map(e => `${e} = ?`).join(" AND ")
+    let sqlQuery = `Select ID from ${tableName} WHERE ${filterString} ${suffix};`
     return sqlQuery
 }
 
@@ -90,6 +98,31 @@ api.get('/get_all_submissions', (req, res) => {
     }
 })
 
+const isSubmittedStatement = db.prepare(convertToSqlSelectIDQuery("Submissions", submitUniqueProperites, "LIMIT 1"))
+api.post('/is_submitted', (req, res) => {
+    const newSubmission = req.body
+
+    let parameterList = convertObjectToArrayOfValues(submitUniqueProperites, newSubmission)
+
+    try{
+        let rows = isSubmittedStatement.all(parameterList);
+        if (rows.length == 0)
+            rows = 0
+        else
+            rows = rows[0].ID
+        res.send(JSON.stringify(rows))
+    }
+    catch(e)
+    {
+        console.log('DB Error')
+        console.log(e)
+
+        res.status(500)
+        res.send('DB Error')
+        return
+    }
+})
+
 const postSubmissionStatement = db.prepare(convertToSqlInsertQuery("Submissions", allProperties))
 api.post('/post_submission', (req, res) => {
     const newSubmission = req.body
@@ -100,13 +133,23 @@ api.post('/post_submission', (req, res) => {
         return
     }
 
-    let parameterList = convertObjectToArrayOfValues(allProperties ,newSubmission)
+    let isSubmittedParameterList = convertObjectToArrayOfValues(submitUniqueProperites, newSubmission)
+    let parameterList = convertObjectToArrayOfValues(allProperties, newSubmission)
 
     try{
-        let info = postSubmissionStatement.run(parameterList);
+        let submitted = isSubmittedStatement.all(isSubmittedParameterList)
+        if (submitted.length != 0)
+        {
+            res.status(400)
+            res.send("Already submitted")
+            return
+        }
 
-        console.dir(`Inserted submission ID ${info.lastInsertRowid}`)
+        let info = postSubmissionStatement.run(parameterList)
+
+        console.log(`Inserted submission ID ${info.lastInsertRowid} - ${newSubmission["DXGI_ADAPTER_DESC__Description"]}`)
         res.send("" + info.lastInsertRowid)
+        return
     }
     catch(e)
     {

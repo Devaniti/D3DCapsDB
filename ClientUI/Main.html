@@ -310,9 +310,9 @@ const BitFlagsMappings =
     },
 }
 
-let SubmitButton;
-let SubmitButtonText;
-let SubmittedID;
+let SubmitButton
+let SubmitButtonText
+const SubmissionIDs = []
 
 function MakeHumanReadable(property, value)
 {
@@ -339,7 +339,7 @@ function MakeHumanReadable(property, value)
         }
         else
         {
-            result = result.substring(0, result.length - 3);
+            result = result.substring(0, result.length - 3)
         }
         return result
     }
@@ -358,14 +358,14 @@ function MakeHumanReadable(property, value)
         case "DXGI_ADAPTER_DESC.DeviceId":
         case "DXGI_ADAPTER_DESC.Revision":
             {
-                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e;
-                return "0x" + ZeroPad(Number(value).toString(16), 4);
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e
+                return "0x" + ZeroPad(Number(value).toString(16), 4)
             }
         // DWORD sized hex number
         case "DXGI_ADAPTER_DESC.SubSysId":
             {
-                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e;
-                return "0x" + ZeroPad(Number(value).toString(16), 8);
+                let ZeroPad = (e, pad) => e.length >= pad ? e : "0".repeat(pad - e.length) + e
+                return "0x" + ZeroPad(Number(value).toString(16), 8)
             }
         // Bytes to human readable
         case "DXGI_ADAPTER_DESC.DedicatedVideoMemory":
@@ -385,7 +385,7 @@ function MakeHumanReadable(property, value)
             }
     }
 
-    return value;
+    return value
 }
 
 let reportIndex = 0
@@ -397,7 +397,7 @@ function UpdateOutput()
     const tableContainer = document.getElementById("TableContainer")
 
     while (tableContainer.lastElementChild) {
-        tableContainer.removeChild(tableContainer.lastElementChild);
+        tableContainer.removeChild(tableContainer.lastElementChild)
     }
 
     const table = document.createElement("table")
@@ -420,14 +420,14 @@ function UpdateOutput()
         }
         {
             SubmitButton = document.createElement("button")
-            SubmitButton.disabled = true;
+            SubmitButton.disabled = true
             SubmitButton.onclick = () => {
                 SubmitButton.disabled = true
 
-                if (SubmittedID)
+                if (SubmissionIDs[reportIndex])
                 {
-                    location.href=`${siteAddress}/ID?ID=${SubmittedID}`
-                    return;
+                    location.href=`${siteAddress}/ID?ID=${SubmissionIDs[reportIndex]}`
+                    return
                 }
 
                 let xhr = new XMLHttpRequest()
@@ -443,18 +443,27 @@ function UpdateOutput()
             SubmitButtonText = document.createTextNode("Please wait.")
             SubmitButton.appendChild(SubmitButtonText)
             cell.appendChild(SubmitButton)
+            const onGetSubmissionID = () => {
+                    SubmitButton.disabled = false
+                    if (SubmissionIDs[reportIndex])
+                        SubmitButtonText.textContent = "Open Online"
+                    else
+                        SubmitButtonText.textContent = "Submit Report"
+                }
+            if (SubmissionIDs[reportIndex] != null)
+            {
+                onGetSubmissionID()
+            }
+            else
             {
                 let xhr = new XMLHttpRequest()
                 xhr.open("POST", apiAddress + "/is_submitted")
                 xhr.setRequestHeader("Content-Type", "application/json")
                 xhr.onreadystatechange = () => {
-                    if(xhr.readyState == 4 && xhr.status == 200) {
-                        SubmittedID = Number(xhr.responseText)
-                        SubmitButton.disabled = false
-                        if (SubmittedID)
-                            SubmitButtonText.textContent = "Open Online"
-                        else
-                            SubmitButtonText.textContent = "Submit Report"
+                    if(xhr.readyState == 4 && xhr.status == 200) 
+                    {
+                        SubmissionIDs[reportIndex] = Number(xhr.responseText)
+                        onGetSubmissionID()
                     }
                 }
                 xhr.send(JSON.stringify(report))
